@@ -1,0 +1,24 @@
+from flask import Flask, request, jsonify
+import json
+
+app = Flask(__name__)
+
+@app.route('/add/<int:a>/<int:b>')
+def add(a, b):
+    return {'operation': 'addition', 'a': a, 'b': b, 'result': a + b}
+
+@app.route('/subtract/<int:a>/<int:b>')
+def subtract(a, b):
+    return {'operation': 'subtraction', 'a': a, 'b': b, 'result': a - b}
+
+@app.route('/multiply/<int:a>/<int:b>')
+def multiply(a, b):
+    return {'operation': 'multiplication', 'a': a, 'b': b, 'result': a * b}
+
+@app.route('/divide/<int:a>/<int:b>')
+def divide(a, b):
+    if b == 0:
+        return {'error': 'Division by zero is not allowed'}, 400
+    return {'operation': 'division', 'a': a, 'b': b, 'result': a / b}
+
+app.run(host='0.0.0.0', port=8080, debug=True)

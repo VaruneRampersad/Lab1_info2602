@@ -1,0 +1,31 @@
+from flask import Flask, request, jsonify
+import json
+
+app = Flask(__name__)
+
+global data
+
+# read data from file and store in global variable data
+with open('data.json') as f:
+    data = json.load(f)
+
+
+@app.route('/')
+def get_stats():
+    programme_counts = {}
+    pref_counts = {}
+    for item in data:
+        programme = item['programme']
+        pref = item['pref']
+        if programme in programme_counts:
+            programme_counts[programme] += 1
+        else:
+            programme_counts[programme] = 1
+        if pref in pref_counts:
+            pref_counts[pref] += 1
+        else:
+            pref_counts[pref] = 1
+    return jsonify({'programme_counts': programme_counts,'pref_counts':pref_counts})
+
+
+app.run(host='0.0.0.0', port=8080, debug=True)
